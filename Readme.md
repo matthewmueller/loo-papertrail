@@ -1,29 +1,36 @@
 
-# los-papertrail
+# loo-papertrail
 
-  Papertrail logging for los
+  Papertrail logging for [loo](https://github.com/matthewmueller/loo).
 
-## License 
+## Usage
 
-(The MIT License)
+```js
+let Papertrail = require('loo-papertrail')
+let log = require('loo')('app')
+let Log = require('loo')
 
-Copyright (c) 2016 Matthew Mueller &lt;mattmuelle@gmail.com&gt;
+// PAPERTRAIL_URL
+//  - format:  PAPERTRAIL_URL="SYSTEM@HOST:PORT"
+//  - example: PAPERTRAIL_URL="loo@logs.papertrailapp.com:43434"
+let papertrail = Papertrail(process.env.PAPERTRAIL_URL)
 
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-'Software'), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
+// send all "app" logs to papertrail
+log.pipe(papertrail)
 
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
+// send every error and fatal error to papertrail.
+// this includes "app", but also any dependency
+// that uses loo.
+Log.pipe.error(papertrail)
+Log.pipe.fatal(papertrail)
+```
 
-THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+## Installation
+
+```
+npm install loo-papertrail
+```
+
+## License
+
+MIT
